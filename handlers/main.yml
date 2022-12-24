@@ -10,4 +10,10 @@
   changed_when: false
   when:
     - skip_handlers | default("false") == "false"
+
+- name: refresh user config
+  include_tasks: ../tasks/configure-groups.yml
+  when:
+    - skip_handlers | default("false") == "false"
+
 ...

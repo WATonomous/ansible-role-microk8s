@@ -30,14 +30,25 @@
     - microk8s.kube
     - microk8s.kube.dir
 
-- name: create kubectl config
+- name: obtain kubectl config
   ansible.builtin.shell:
-    cmd: microk8s config --use-loopback > {{ microk8s_user.home }}/.kube/config
+    cmd: microk8s config --use-loopback
   args:
     executable: /bin/bash
-    creates: "{{ microk8s_user.home }}/.kube/config"
   environment:
     PATH: '${PATH}:/snap/bin/'
+  register: kubectl_config
+  changed_when: false
+  tags:
+    - molecule-idempotence-notest
+    - microk8s
+    - microk8s.kube
+    - microk8s.kube.config
+
+- name: populate kubectl config
+  ansible.builtin.copy:
+    dest: "{{ microk8s_user.home }}/.kube/config"
+    content: "{{ kubectl_config.stdout }}"
   with_items: '{{ microk8s_add_user_to_group.results }}'
   loop_control:
     loop_var: microk8s_user
@@ -47,6 +58,7 @@
     - microk8s
     - microk8s.kube
     - microk8s.kube.config
+    - microk8s.kube.config.copy
 
 - name: reaffirm permission on config directory
   ansible.builtin.file:
