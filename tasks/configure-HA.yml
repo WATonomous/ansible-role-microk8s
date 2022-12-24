@@ -1,19 +1,4 @@
 ---
-- name: Enumerate all cluster hosts within the hosts file
-  ansible.builtin.blockinfile:
-    dest: /etc/hosts
-    marker: "# {mark} ANSIBLE MANAGED: microk8s HA Cluster Hosts"
-    # yamllint disable rule:line-length
-    content: |
-      {% for host in groups[microk8s_group_ha] %}
-      {{ hostvars[host].ansible_default_ipv4.address }} {{ hostvars[host].ansible_hostname }}.{{ microk8s_ha_domain }}
-      {% endfor %}
-    # yamllint enable rule:line-length
-  tags:
-    - microk8s
-    - microk8s.ha
-    - microk8s.ha.hosts
-
 - name: Set master var on all hosts
   set_fact:
     microk8s_master: "{{ inventory_hostname }}"
