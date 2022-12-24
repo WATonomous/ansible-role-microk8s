@@ -32,7 +32,7 @@
 
 - name: create kubectl config
   ansible.builtin.shell:
-    cmd: microk8s config > {{ microk8s_user.home }}/.kube/config
+    cmd: microk8s config --use-loopback > {{ microk8s_user.home }}/.kube/config
   args:
     executable: /bin/bash
     creates: "{{ microk8s_user.home }}/.kube/config"
