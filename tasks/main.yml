@@ -36,7 +36,6 @@
 - name: configure plugins
   ansible.builtin.include_tasks:
     file: configure-plugins.yml
-  run_once: true
   when:
     - microk8s_plugins is defined
   tags:
