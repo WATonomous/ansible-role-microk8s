@@ -4,6 +4,7 @@
     dest: /etc/hosts
     marker: "# {mark} ANSIBLE MANAGED: microk8s HA Cluster Hosts"
     # yamllint disable rule:line-length
+    state: absent
     content: |
       {% for host in groups[microk8s_group_ha] %}
       {{ hostvars[host].ansible_default_ipv4.address }} {{ hostvars[host].ansible_hostname }}
