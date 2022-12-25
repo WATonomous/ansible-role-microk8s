@@ -50,7 +50,6 @@
       notify:
         - microk8s ready
         - refresh user config
-
   when: inventory_hostname not in microk8s_master
   tags:
     - microk8s
