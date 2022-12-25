@@ -56,6 +56,8 @@
     - microk8s.ha
     - microk8s.ha.join
 
+# This is used to solve the "failed to create pod sandbox ... dial tcp i/o timeout" error message:
+# https://github.com/projectcalico/calico/issues/2695#issuecomment-1303840350
 - block:
   - name: Set the current hosts's IP address in kubelet args
     ansible.builtin.blockinfile:
