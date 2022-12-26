@@ -68,4 +68,10 @@ microk8s_trusted_registries: [
   # Example:
   # { "endpoint": "http://localhost:32000" },
 ]
+
+# Additional kubelet arguments to be placed in /var/snap/microk8s/current/args/kubelet
+microk8s_additional_kubelet_args: [
+  # Example:
+  # "--system-reserved=cpu=500m,memory=512Mi",
+]
 ...

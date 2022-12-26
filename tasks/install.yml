@@ -110,4 +110,11 @@
     - notest
     - microk8s
     - microk8s.disable_autoupdate
+
+- name: Set additional kubelet args
+  ansible.builtin.blockinfile:
+    path: /var/snap/microk8s/current/args/kubelet
+    marker: "# {mark} ANSIBLE MANAGED: microk8s additional kubelet args"
+    content: "{{ microk8s_additional_kubelet_args | join('\n') }}"
+  notify: restart microk8s
 ...
