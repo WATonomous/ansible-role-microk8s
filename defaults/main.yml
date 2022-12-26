@@ -42,6 +42,9 @@ microk8s_dns_servers:
   - 8.8.8.8
   - 8.8.4.4
 
+# https://microk8s.io/docs/addon-host-access
+microk8s_host_access_ip: 10.0.1.1
+
 ## microk8s_users to make members of microk8s group
 microk8s_users: []
 
@@ -59,4 +62,10 @@ microk8s_channel: stable
 
 # The IP address of the node to use for the microk8s HA cluster.
 # microk8s_node_ip:
+
+# https://microk8s.io/docs/registry-private
+microk8s_trusted_registries: [
+  # Example:
+  # { "endpoint": "http://localhost:32000" },
+]
 ...

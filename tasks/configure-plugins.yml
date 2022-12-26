@@ -12,6 +12,7 @@
     - microk8s_plugin.value
     - microk8s_plugin.key != "registry"
     - microk8s_plugin.key != "dns"
+    - microk8s_plugin.key != "host-access"
   register: microk8s_cmd_result
   changed_when:
     - "microk8s_plugin.key ~ ' is already enabled'
@@ -38,6 +39,7 @@
     - microk8s_plugins is defined
     - not (microk8s_plugin.value | bool)
     - microk8s_plugin.key != "registry"
+    - microk8s_plugin.key != "host-access"
   tags:
     - molecule-idempotence-notest
     - microk8s
@@ -49,7 +51,7 @@
     cmd: "microk8s.enable registry:size={{ microk8s_registry_size }}"
   register: microk8s_cmd_result
   changed_when:
-    - "'Addon registry is already enabled' not in microk8s_cmd_result.stdout"
+    - "'registry is already enabled' not in microk8s_cmd_result.stdout"
   when:
     - is_master is defined and ( is_master | bool)
     - microk8s_plugins is defined
@@ -66,7 +68,7 @@
     cmd: "microk8s.disable registry:size={{ microk8s_registry_size }}"
   register: microk8s_cmd_result
   changed_when:
-    - "'Addon registry is already disabled' not in microk8s_cmd_result.stdout"
+    - "'registry is already disabled' not in microk8s_cmd_result.stdout"
   when:
     - is_master is defined and ( is_master | bool)
     - microk8s_plugins is defined
@@ -94,4 +96,42 @@
     - microk8s.plugins
     - microk8s.plugins.enable
     - microk8s.plugins.enable.dns
+
+- name: Enable host-access
+  ansible.builtin.command:
+    cmd: "microk8s.enable host-access:ip={{ microk8s_host_access_ip }}"
+  register: microk8s_cmd_result
+  changed_when:
+    - "'host-access is already enabled' not in microk8s_cmd_result.stdout"
+  when:
+    - microk8s_plugins is defined
+    - "'host-access' in microk8s_plugins"
+    - (microk8s_plugins["host-access"] | bool)
+  tags:
+    - microk8s
+    - microk8s.plugins
+    - microk8s.plugins.enable
+    - microk8s.plugins.enable.host_access
+
+- name: Disable host-access
+  ansible.builtin.command:
+    cmd: "microk8s.disable host-access:ip={{ microk8s_host_access_ip }}"
+  register: microk8s_cmd_result
+  changed_when:
+    - "'host-access is already disabled' not in microk8s_cmd_result.stdout"
+  when:
+    - microk8s_plugins is defined
+    - "'host-access' in microk8s_plugins"
+    - not (microk8s_plugins["host-access"] | bool)
+  tags:
+    - microk8s
+    - microk8s.plugins
+    - microk8s.plugins.disable
+    - microk8s.plugins.disable.host_access
+
+- name: Populate Trusted Registries
+  ansible.builtin.template:
+    src: hosts.toml.j2
+    dest: /var/snap/microk8s/current/args/certs.d/{{ item.endpoint | regex_replace('https?:\/\/','') }}/hosts.toml
+  with_items: "{{ microk8s_trusted_registries | default([]) }}"
 ...

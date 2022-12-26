@@ -1,0 +1,6 @@
+# This file is provisioned automatically by Ansible
+
+server = "{{ item.endpoint }}"
+
+[host."{{ item.endpoint }}"]
+    capabilities = ["pull", "resolve"]
