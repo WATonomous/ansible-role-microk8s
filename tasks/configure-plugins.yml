@@ -85,7 +85,7 @@
     cmd: 'microk8s.enable dns:{{ microk8s_dns_servers | join(",") }}'
   register: microk8s_cmd_result
   changed_when:
-    - "'Addon dns is already enabled' not in microk8s_cmd_result.stdout"
+    - "'dns is already enabled' not in microk8s_cmd_result.stdout"
   when:
     - is_master is defined and ( is_master | bool)
     - microk8s_plugins is defined
