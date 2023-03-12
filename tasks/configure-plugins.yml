@@ -101,6 +101,9 @@
   ansible.builtin.command:
     cmd: "microk8s.enable host-access:ip={{ microk8s_host_access_ip }}"
   register: microk8s_cmd_result
+  until: microk8s_cmd_result is not failed
+  # Running the command twice because it might fail with exit code 2 on the first try
+  retries: 1
   changed_when:
     - "'host-access is already enabled' not in microk8s_cmd_result.stdout"
   when:
@@ -128,6 +131,12 @@
     - microk8s.plugins
     - microk8s.plugins.disable
     - microk8s.plugins.disable.host_access
+
+- name: Create Directory for trusted registries
+  ansible.builtin.file:
+    path: /var/snap/microk8s/current/args/certs.d/{{ item.endpoint | regex_replace('https?:\/\/','') }}
+    state: directory
+  with_items: "{{ microk8s_trusted_registries | default([]) }}"
 
 - name: Populate Trusted Registries
   ansible.builtin.template:
