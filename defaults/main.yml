@@ -74,4 +74,24 @@ microk8s_additional_kubelet_args: [
   # Example:
   # "--system-reserved=cpu=500m,memory=512Mi",
 ]
+
+# Additional arguments to be placed in /var/snap/microk8s/current/args/kube-scheduler
+microk8s_additional_scheduler_args: [
+  # Example:
+  # "--authentication-kubeconfig=${SNAP_DATA}/credentials/scheduler.config",
+  # "--authorization-kubeconfig=${SNAP_DATA}/credentials/scheduler.config"
+]
+
+# Additional arguments to be placed in /var/snap/microk8s/current/args/kube-controller-manager
+microk8s_additional_controller_manager_args: [
+  # Example:
+  # "--authentication-kubeconfig=${SNAP_DATA}/credentials/controller.config",
+  # "--authorization-kubeconfig=${SNAP_DATA}/credentials/controller.config"
+]
+
+# Additional arguments to be placed in /var/snap/microk8s/current/args/kube-proxy
+microk8s_additional_proxy_args: [
+  # Example:
+  # --metrics-bind-address="0.0.0.0:10249"
+]
 ...

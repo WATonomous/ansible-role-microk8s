@@ -117,4 +117,25 @@
     marker: "# {mark} ANSIBLE MANAGED: microk8s additional kubelet args"
     content: "{{ microk8s_additional_kubelet_args | join('\n') }}"
   notify: restart microk8s
+
+- name: Set additional scheduler args
+  ansible.builtin.blockinfile:
+    path: /var/snap/microk8s/current/args/kube-scheduler
+    marker: "# {mark} ANSIBLE MANAGED: microk8s additional scheduler args"
+    content: "{{ microk8s_additional_scheduler_args | join('\n') }}"
+  notify: restart microk8s
+
+- name: Set additional controller-manager args
+  ansible.builtin.blockinfile:
+    path: /var/snap/microk8s/current/args/kube-controller-manager
+    marker: "# {mark} ANSIBLE MANAGED: microk8s additional controller-manager args"
+    content: "{{ microk8s_additional_controller_manager_args | join('\n') }}"
+  notify: restart microk8s
+
+- name: Set additional proxy args
+  ansible.builtin.blockinfile:
+    path: /var/snap/microk8s/current/args/kube-proxy
+    marker: "# {mark} ANSIBLE MANAGED: microk8s additional proxy args"
+    content: "{{ microk8s_additional_proxy_args | join('\n') }}"
+  notify: restart microk8s
 ...
