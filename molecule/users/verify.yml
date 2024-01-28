@@ -19,9 +19,9 @@
       ansible.builtin.apt:
         name:
           - snapd
-          - fuse
           - udev
         state: present
+        fail_on_autoremove: true
       check_mode: true
       register: microk8s_verify
       failed_when: microk8s_verify.changed
