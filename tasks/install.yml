@@ -20,6 +20,21 @@
     enabled: true
   with_items:
     - snapd
+  loop_control:
+    loop_var: microk8s_service
+    label: "{{ microk8s_service }}"
+  tags:
+    - microk8s
+    - microk8s.dependencies
+    - microk8s.dependencies.services
+    - microk8s.dependencies.services.start_and_enable
+
+# Static services cannot be enabled, so we simply start them
+- name: Start Static Services
+  ansible.builtin.service:
+    name: "{{ microk8s_service }}"
+    state: started
+  with_items:
     - udev
   loop_control:
     loop_var: microk8s_service
@@ -28,6 +43,7 @@
     - microk8s
     - microk8s.dependencies
     - microk8s.dependencies.services
+    - microk8s.dependencies.services.start_static
 
 - name: Install microk8s
   community.general.snap:
