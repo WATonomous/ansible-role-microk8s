@@ -3,11 +3,11 @@
   ansible.builtin.apt:
     name:
       - snapd
-      - fuse
       - udev
     state: present
     update_cache: true
     cache_valid_time: "{{ microk8s_cache_valid_time }}"
+    fail_on_autoremove: true
   tags:
     - microk8s
     - microk8s.dependencies
