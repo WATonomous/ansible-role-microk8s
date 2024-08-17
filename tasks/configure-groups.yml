@@ -35,8 +35,6 @@
     cmd: microk8s config --use-loopback
   args:
     executable: /bin/bash
-  environment:
-    PATH: '${PATH}:/snap/bin/'
   register: kubectl_config
   changed_when: false
   tags:
